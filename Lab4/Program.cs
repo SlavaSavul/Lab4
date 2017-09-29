@@ -9,17 +9,17 @@ namespace ConsoleApp1
 
     class Elem
     {
-        object data;
+        int data;
         Elem next;
 
 
-        public Elem(object i, Elem j)
+        public Elem(int i, Elem j)
         {
             data = i;
             next = j;
         }
 
-        public object Data
+        public int Data
         {
             get { return data; }
         }
@@ -105,45 +105,34 @@ namespace ConsoleApp1
 
 
 
-        public void Push(object i)
+        public void Push(int i)
         {
             head = new Elem(i, head);
             kol++;
         }
-        public object Pop()
+        public int Pop()
         {
 
-            if (head == null) return null;
             kol--;
-            object ret = head.Data;
+            int ret = head.Data;
             head = head.Next;
             return ret;
 
         }
 
 
-        public static Stack operator -(Stack stack, object el)
+        public static Stack operator -(Stack stack, int el)
         {
 
             Stack InterimSteck = new Stack();
-            object obj;
+            int obj;
 
 
             while (stack.Head != null)
             {
                 obj = stack.Pop();
-                if (obj.GetType() == el.GetType())
-                {
-                    if (el is int)
-                    {
-                        if ((int)obj == (int)el) continue;
-                    }
-                    else if (el is string)
-                    {
-                        if (String.Compare((string)obj, (string)el) == 0) continue;
-                    }
+              if (obj == el) continue;
 
-                }
                 InterimSteck.Push(obj);
             }
 
@@ -155,15 +144,15 @@ namespace ConsoleApp1
         }
         public static Stack operator ++(Stack stack)
         {
-            object obj = stack.Pop();
+            int obj = stack.Pop();
             stack.Push(obj);
             stack.Push(obj);
             return stack;
         }
         public static bool operator <(Stack stack1, Stack stack2)
         {
-            object[] MasElem1 = new object[stack1.Kol];
-            object[] MasElem2 = new object[stack2.Kol];
+            int[] MasElem1 = new int[stack1.Kol];
+            int[] MasElem2 = new int[stack2.Kol];
 
             int i = 0;
             int j = 0;
@@ -198,19 +187,14 @@ namespace ConsoleApp1
             {
                 for (int jj = 0; jj < MasElem1.Length; jj++)
                 {
-                    if (MasElem2[ii].GetType() == MasElem1[jj].GetType())
-                    {
+                   
 
-                        if (MasElem1[jj] is int)
-                        {
-                            if ((int)MasElem2[ii] == (int)MasElem1[jj]) break;
-                        }
-                        if (MasElem1[jj] is string)
-                        {
-                            if (String.Compare((string)MasElem2[ii], (string)MasElem1[jj]) == 0) break;
-                        }
+                        
+                            if (MasElem2[ii] == MasElem1[jj]) break;
+                        
+                       
 
-                    }
+                    
                     if (jj == MasElem1.Length - 1) stack1.Push(MasElem2[ii]);
                 }
             }
@@ -218,8 +202,8 @@ namespace ConsoleApp1
         }
         public static bool operator >(Stack stack2, Stack stack1)
         {
-            object[] MasElem1 = new object[stack1.Kol];
-            object[] MasElem2 = new object[stack2.Kol];
+            int[] MasElem1 = new int[stack1.Kol];
+            int[] MasElem2 = new int[stack2.Kol];
 
             int i = 0;
             int j = 0;
@@ -254,19 +238,14 @@ namespace ConsoleApp1
             {
                 for (int jj = 0; jj < MasElem1.Length; jj++)
                 {
-                    if (MasElem2[ii].GetType() == MasElem1[jj].GetType())
-                    {
 
-                        if (MasElem1[jj] is int)
-                        {
-                            if ((int)MasElem2[ii] == (int)MasElem1[jj]) break;
-                        }
-                        if (MasElem1[jj] is string)
-                        {
-                            if (String.Compare((string)MasElem2[ii], (string)MasElem1[jj]) == 0) break;
-                        }
 
-                    }
+
+                    if (MasElem2[ii] == MasElem1[jj]) break;
+
+
+
+
                     if (jj == MasElem1.Length - 1) stack1.Push(MasElem2[ii]);
                 }
             }
@@ -275,7 +254,7 @@ namespace ConsoleApp1
 
 
     }
-
+    
     static class MyMath
     {
         public static void Cube(ref Stack obj)
@@ -284,17 +263,8 @@ namespace ConsoleApp1
 
             while (obj.Head != null)
             {
-
-                object value = obj.Pop();
-                if (value is int)
-                {
-                    value = Math.Pow((int)value, 3);
-                    B.Push(value);
-                }
-                else
-                {
-                    B.Push(value);
-                }
+                int value = obj.Pop();                
+                B.Push((int)Math.Pow(value, 3));                            
             }
             while (B.Head != null)
             {
@@ -309,8 +279,8 @@ namespace ConsoleApp1
             while (obj.Head != null)
             {
 
-                object value = obj.Pop();
-                if (value is int && (int)value < 0)
+                int value = obj.Pop();
+                if ( value < 0)
                 {
                     value = 0;
                     B.Push(value);
@@ -326,28 +296,60 @@ namespace ConsoleApp1
             }
         }
         public static int Sum(ref Stack obj)
-        {
-            Stack B = new Stack("", "");
-            int Sum = 0;
-            while (obj.Head != null)
-            {
+          {
+              Stack B = new Stack("", "");
+              int Sum = 0;
+              while (obj.Head != null)
+              {
 
-                object value = obj.Pop();
-                if (value is int)
-                {
-                    Sum += (int)value;
-                    B.Push(value);
-                }
-                else
-                {
-                    B.Push(value);
-                }
+                  int value = obj.Pop();
+                  
+                      Sum += value;
+                      B.Push(value);
+                  
+                 
+              }
+              while (B.Head != null)
+              {
+                  obj.Push(B.Pop());
+              }
+              return Sum;
+          }
+          
+        public static int ExclamatorySentences(this string str)
+        {
+            int kol = 0;
+            for (int i = 0; i < str.Length; i++)
+            {
+                if (str[i] == '!')
+                    kol++;
             }
+
+            return kol;
+        }
+
+
+        public static bool NegativeElements(this Stack st)
+        {
+
+            Stack B = new Stack("", "");
+            bool ret=false;
+            while (st.Head!=null)
+            {
+                int i = st.Pop();
+                if(i<0)
+                {
+                    ret = true;
+                }
+                B.Push(i);
+            }
+
+
             while (B.Head != null)
             {
-                obj.Push(B.Pop());
+                st.Push(B.Pop());
             }
-            return Sum;
+            return ret;
         }
     }
 
@@ -362,15 +364,29 @@ namespace ConsoleApp1
             A.Push(2);
             A.Push(-3);
             A.Push(4);
-            A.Push("ff");
+            A.Push(2);
             A.Push(-2);
+            Stack B = new Stack("Slava", "BSTU");
+            B.Push(6);
+            B.Push(2);
+            B.Push(10);
 
+            Console.WriteLine("Counter '!'   "+MyMath.ExclamatorySentences("1s!wqsa!"));
+            Console.WriteLine("Negative    " + MyMath.NegativeElements(A));
+
+            //bool t=A < B;
+            //A=A - 2;
+            //A++;
+            //MyMath.Cube(ref A);
+            //MyMath.Null(ref A);
+            // Console.WriteLine(MyMath.Sum(ref A));  Console.WriteLine();
 
 
             while (A.Head != null)
             {
                 Console.WriteLine(A.Pop());
             }
+
             Console.WriteLine();
             Console.WriteLine();
             Console.WriteLine(A.Date);
